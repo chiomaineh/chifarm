@@ -38,3 +38,30 @@ window.addEventListener("scroll", function () {
     goTopBtn.classList.remove("active");
   }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", function() {
+      const filterValue = this.textContent.trim();
+
+      // Remove 'active' class from all buttons
+      filterButtons.forEach(btn => btn.classList.remove("active"));
+      // Add 'active' class to the clicked button
+      this.classList.add("active");
+
+      const productItems = document.querySelectorAll(".product-item");
+
+      productItems.forEach(item => {
+        // Hide all product items
+        item.style.display = "none";
+
+        // Check if the product item has a class matching the filter
+        if (filterValue === "All" || item.classList.contains(filterValue.toLowerCase().replace("& ", "").replace(/\s+/g, '-'))) {
+          item.style.display = "block";
+        }
+      });
+    });
+  });
+});
