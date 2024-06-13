@@ -754,9 +754,16 @@
     font-family: Poppins;
   
   }
+
+  /*Farmer info*/
+  .farmer-info {
+    font-weight: bold;
+    color: rgb(53, 105, 53);
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
   
-  
-  
+
   
   
   
