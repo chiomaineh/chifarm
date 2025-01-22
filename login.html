@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title> Chifarm | Accounts</title>
+    <title> Chifarm | Login</title>
     <link rel="stylesheet" href="login.css">
     <!-- Fontawesome CDN Link -->
 
@@ -19,6 +19,28 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+      /* Pop-up styles */
+      #popup {
+          display: none;
+          position: fixed;
+          bottom: -100px;
+          left: 0;
+          right: 0;
+          background-color: #dc3545;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          font-size: 16px;
+          z-index: 1000;
+          transition: bottom 0.5s ease-in-out;
+      }
+      #popup.show {
+          display: block;
+          bottom: 0;
+      }
+  </style>
    </head>
 <body>
   <div class="container">
@@ -41,27 +63,39 @@
     <div class="forms">
         <div class="form-content">
           <div class="login-form">
-            <a href="#" id="goBackLink">       <i style="font-size: 25px; color:  #5b13b9; text-shadow: 0 2px 50px  #5b13b9;;" class='fas fa-arrow-left'></i></a>
- 
-            <div class="title">Login on      <strong style="font-family: caveat; font-size: 40px; color: green; font-weight: bold; "> <i class="fas fa-seedling"></i>  chifarm</strong></div>
-          <form action="#">
-            <div class="input-boxes">
-              <div class="input-box">
-                <i class="fas fa-envelope"></i>
-                <input type="text" placeholder="Enter your email" required>
-              </div>
-              <div class="input-box">
-                <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Enter your password" required>
-              </div>
-              <div class="text"><a href="#">Forgot password?</a></div>
-              <div class="button input-box">
-                <input type="submit" value="Login">
-              </div>
-              <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
-            </div>
-        </form>
-      </div>
+            <a href="#" id="goBackLink">
+                <i style="font-size: 25px; color: #5b13b9; text-shadow: 0 2px 50px #5b13b9;" class='fas fa-arrow-left'></i>
+            </a>
+            <div class="title">Login on <strong style="font-family: caveat; font-size: 40px; color: green; font-weight: bold;"><i class="fas fa-seedling"></i> chifarm</strong></div>
+            <form id="loginForm">
+                <div class="input-boxes">
+                    <div class="input-box">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="text"><a href="#">Forgot password?</a></div>
+                    <div class="button input-box">
+                        <input type="submit" value="Login">
+                    </div>
+                    <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
+                </div>
+            </form>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+
         <div class="signup-form">
           <a href="#" id="goBackLinkk">       <i style="font-size: 25px; color:  #5b13b9; text-shadow: 0 2px 50px  #5b13b9;;" class='fas fa-arrow-left'></i></a>
  
@@ -103,6 +137,79 @@
     </div>
     </div>
   </div>
+
+
+
+
+  <div id="popup"></div>
+        
+  
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Get the form values
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    // Retrieve the stored user data
+    var storedUser = localStorage.getItem(email);
+
+    if (storedUser) {
+        var userData = JSON.parse(storedUser);
+
+        // Check if the password matches
+        if (userData.password === password) {
+            // Store logged-in user information
+            localStorage.setItem("loggedInUser", JSON.stringify({ name: userData.name, role: userData.role }));
+            // Redirect to the respective page based on the role
+            if (userData.role === 'Farmer') {
+                window.location.href = "adminproducts.html";
+            } else {
+                window.location.href = "index.html";
+            }
+        } else {
+            showPopup("Incorrect password", "error");
+        }
+    } else {
+        showPopup("User does not exist", "error");
+    }
+});
+
+document.getElementById("goBackLink").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the default behavior of the link
+    history.back(); // Go back to the previous page
+});
+
+function showPopup(message, type) {
+    var popup = document.getElementById("popup");
+    popup.innerText = message;
+    popup.className = type;
+    popup.classList.add("show");
+
+    // Hide the popup after 3 seconds
+    setTimeout(function() {
+        popup.classList.remove("show");
+    }, 3000);
+}
+
+
+  document.getElementById("goBackLinkk").addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent the default behavior of the link
+      history.back(); // Go back to the previous page
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
 
   <script>
     document.getElementById("goBackLinkk").addEventListener("click", function(event) {
