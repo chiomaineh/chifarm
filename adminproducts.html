@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="admin.css">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    
+       <!-- favicon -->
+       <link rel="shortcut icon" href="assets/images/pay - Copy.png" type="image/svg+xml">
+
+  <!-- fas fa icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+
+    <Link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@300;400;500;600;700&family=Poppins:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+    <title>chifarm - Farmer Dashboard </title>
+
+
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            width: 100px;
+            height: auto;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .btn.edit {
+            background-color: #4CAF50;
+        }
+        .btn.delete {
+            background-color: #f44336;
+        }
+    </style>
+
+
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <i class="fas fa-seedling"></i>
+            </div>
+
+            <span class="logo_name">        <p style="font-family: caveat; font-size: 40px; color: #25b925; font-weight: bold; "> chifarm</p></span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li ><a  href="#">
+                    <i style="color: #25b925;" class="uil uil-estate"></i>
+                    <span style="color: #25b925;" class="link-name">Dahsboard</span>
+                </a></li>
+       
+                <li><a href="#">
+                    <i class="uil uil-chart"></i>
+                    <span class="link-name">Messages</span>
+                </a></li>
+
+                <li><a href="upload.html">
+                    <i class="uil uil-plus"></i>
+                    <span class="link-name">Upload</span>
+                </a></li>
+       
+             
+            </ul>
+            
+            <ul class="logout-mode">
+                <li><a onclick="logout()" href="#">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                  <span class="switch"></span>
+                </div>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here...">
+            </div>
+            
+            <!--<img src="images/profile.jpg" alt="">-->
+        </div>
+
+        <div class="dash-content">
+            <div class="overview">
+                <div style="border-bottom: 1px solid rgb(195, 193, 193); padding: 0 0 20px;" class="title">
+                 
+                        <span class="text">Hi <strong id="username"></strong>,<br> Welcome to Your Farmer Dashboard. </span>
+        
+                </div>
+
+
+
+             
+            
+                <script>
+                // Retrieve the logged-in user's information from localStorage
+                var loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+                if (loggedInUser) {
+                    document.getElementById("username").textContent = loggedInUser.name;
+                } else {
+                    // If no user is logged in, redirect to the login page
+                    window.location.href = "login.html";
+                }
+            
+                // Function to log out the user
+                function logout() {
+                    localStorage.removeItem("loggedInUser");
+                    window.location.href = "login.html";
+                }
+                </script>
+                <div class="title">
+
+                    
+                    <i class="uil uil-tachometer-fast-alt"></i>
+                    <span class="text">Dashboard</span>
+
+                </div>
+
+                <div class="boxes">
+                    <div class="box box1">
+                        <i class="uil uil-circle"></i>
+                        <span class="text">Total Products</span>
+                        <span class="number">0</span>
+                    </div>
+                    
+             
+             
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="activity">
+                <div class="title">
+                    <i class="uil uil-clock-three"></i>
+                    <span class="text">Recent Activity</span>
+                </div>
+
+
+                <main>
+                    <section>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                    <th>Product Type</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-table-body">
+                                <!-- Product rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </section>
+                </main>
+            
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const productTableBody = document.getElementById('product-table-body');
+                        let products = localStorage.getItem('products');
+                        products = products ? JSON.parse(products) : [];
+            
+                        products.forEach((product, index) => {
+                            const row = document.createElement('tr');
+            
+                            row.innerHTML = `
+                                <td>${product.productName}</td>
+                                <td>N${product.price}</td>
+                                <td><img src="${product.productImageURL}" alt="${product.productName}"></td>
+                                <td>${product.productType}</td>
+                                <td>${product.category}</td>
+                                <td>
+                                    <button class="btn edit" onclick="editProduct(${index})">Edit</button>
+                                    <button class="btn delete" onclick="deleteProduct(${index})">Delete</button>
+                                </td>
+                            `;
+            
+                            productTableBody.appendChild(row);
+                        });
+                    });
+            
+                    function editProduct(index) {
+                        // Redirect to a page with a form for editing the product
+                        // Pass the index of the product as a query parameter
+                        window.location.href = `edit-product.html?index=${index}`;
+                    }
+            
+                    function deleteProduct(index) {
+                        let products = localStorage.getItem('products');
+                        products = products ? JSON.parse(products) : [];
+                        
+                        // Remove the product at the specified index
+                        products.splice(index, 1);
+                        
+                        // Save the updated products array to localStorage
+                        localStorage.setItem('products', JSON.stringify(products));
+                        
+                        // Reload the page to reflect the changes
+                        window.location.reload();
+                    }
+                </script>
+
+
+
+
+
+
+
+
+                
+
+        </div>
+    </section>
+
+    <script src="admin.js"></script>
+</body>
+</html>
